@@ -1,0 +1,31 @@
+{{- $appName := include "general-template.name" . -}}
+{{- if .Values.volume.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ $appName }}-{{ .Release.Namespace }}
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  #storageClassName: nfs
+  nfs:
+    server:  {{ .Values.volume.server }}
+    path:  {{ .Values.volume.path }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $appName }}-{{ .Release.Namespace }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: ''
+# volumeMode: Filesystem
+  volumeName: {{ $appName }}-{{ .Release.Namespace }} 
+  resources:
+    requests:
+      storage: 5Gi
+{{- end }}
