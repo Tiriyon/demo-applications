@@ -8,4 +8,4 @@ dependencies:
   - name: general-template
     version: "0.1.0"
     alias: demo-app
-    repository: "file://../templates/general-template"
+    repository: "file://../general-template"
