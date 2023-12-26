@@ -1,0 +1,4 @@
+test:
+  image:
+    repository: "nginx"
+    tag: latest
