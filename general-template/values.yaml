@@ -50,8 +50,8 @@ securityContext: {}
 
 service:
   type: LoadBalancer
-  port: 8080
-  targetPort: 8080
+  port: 3000
+  targetPort: 3000
   name: ""
 
 route:
