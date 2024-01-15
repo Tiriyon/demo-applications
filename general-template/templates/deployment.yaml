@@ -73,7 +73,7 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          commad: ["/bin/bash"]
+          command: ["/bin/bash"]
           args: ["-c", "while true; do sleep 3600; done"]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
