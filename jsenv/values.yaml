@@ -8,6 +8,7 @@ demo-app:
     items:
     - name: env
       mountPath: /app
+      subPath: ".env"
       data:
         .env: |
           PORT=3000

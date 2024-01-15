@@ -73,8 +73,8 @@ spec:
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
-          command: ["/bin/bash"]
-          args: ["-c", "while true; do sleep 3600; done"]
+          #command: ["/bin/bash"]
+          #args: ["-c", "while true; do sleep 3600; done"]
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           env:
@@ -90,6 +90,7 @@ spec:
           {{- range .Values.configmaps.items }}
           - name: {{ .name }}-{{ $appName}}
             mountPath: {{ .mountPath }}
+            subPath: {{ .subPath }}
           {{- end }}
           {{- end }}
           {{- end }}
