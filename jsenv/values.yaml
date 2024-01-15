@@ -7,7 +7,7 @@ demo-app:
     enabled: true
     items:
     - name: env
-      mountPath: /app
+      mountPath: /app/.env
       subPath: ".env"
       data:
         .env: |
