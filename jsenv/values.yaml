@@ -4,7 +4,7 @@ demo-app:
     tag: latest
 
   configmaps:
-    enabled: true
+    enabled: false
     items:
     - name: env
       mountPath: /app
