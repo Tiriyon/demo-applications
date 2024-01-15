@@ -106,61 +106,14 @@ tolerations: []
 
 affinity: {}
 
-#configmaps:
-#  enabled: true
+configmaps:
+  enabled: false
 #  items:
 #  - name: configmaptest
-#    mountPath: /test/mount/path
+#    mountPath: /path/to/file/file.txt
+#    subPath: "file.txt"
 #    data:
-#      testfile.txt: |
+#      file.txt: |
 #        some text
 #        inserted here
-#  - name: configmaptest2
-#    mountPath: /test/mount/path2
-#    data:
-#      testfile.txt: |
-#        some text
-#        inserted here
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Can add more configmaps here.
