@@ -31,6 +31,13 @@ Create chart name and version as used by the chart label.
 {{- end }}
 
 {{/*
+Timestamp
+*/}}
+{{- define "general-template.timestamp" -}}
+"{{ now | unixEpoch }}"
+{{- end }}
+
+{{/*
 Common labels
 */}}
 {{- define "general-template.labels" -}}
@@ -48,6 +55,7 @@ Selector labels
 {{- define "general-template.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "general-template.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+# cellcom/release-timestamp: {{ include "general-template.timestamp" . }}
 {{- end }}
 
 {{/*

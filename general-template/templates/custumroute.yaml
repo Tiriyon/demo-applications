@@ -1,0 +1,40 @@
+{{- $appName := include "general-template.name" . -}}
+{{- $fullName := include "general-template.fullname" . -}}
+{{- $svcPort := .Values.service.port -}}
+{{- $tls := .Values.tls.enabled -}}
+
+{{- if .Values.customRoute.enabled -}}
+
+{{ range $k, $route := .Values.customRoute.routes }}
+
+{{- if $route.enabled -}}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ $route.name }}
+  labels:
+    {{- include "general-template.labels" $ | nindent 4 }}
+  {{- with $.Values.route.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  host: {{ $route.host }}
+  path: /
+  to:
+    kind: Service
+    name: {{ $appName }}
+  port:
+    targetPort: {{ $svcPort }}
+  {{- if $tls }}
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+  {{- end }}
+---
+{{ end }}
+
+{{ end }}
+
+{{ end }}
+

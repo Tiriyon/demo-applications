@@ -1,0 +1,12 @@
+{{- if .Values.configmaps.enabled }}
+{{- $appName := include "general-template.name" . -}}
+{{- range .Values.configmaps.items }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .name }}-{{ $appName }}
+data: {{ range $filename, $data := .data }}
+  {{ $filename }}: |{{ $data | nindent 4 }}
+{{- end }}            
+{{- end }}
+{{- end }}

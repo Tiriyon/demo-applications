@@ -1,13 +1,18 @@
+# Default values for dotnet-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
 replicaCount: 1
 volume:
-  enabled: false
-  server: ""
-  path: ""
-  mountPath: ""
+  enabled: true
+  server: "test"
+  path: "/test/path/volume"
+  mountPath: "/lala"
 
 image:
-  repository:
+  repository: "corpnexus.corp.cellcom.co.il/digital/digital.okd.test/102710"
   pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
 imagePullSecrets: []
@@ -20,20 +25,20 @@ serviceAccount:
   # Annotations to add to the service account
   annotations: {}
   # The name of the service account to use.
-  # If not set and create is true, a name is generated using fullname template
+  # If not set and create is true, a name is generated using the fullname template
   name: ""
-
+  
 tls:
   enabled: false
 
-podAnnotations: {}
+podAnnotations: false
 
 podSecurityContext: {}
   # fsGroup: 2000
 envVar:
   - name: test
-    value: test
-
+    value: elad
+            
 securityContext: {}
   # capabilities:
   #   drop:
@@ -47,6 +52,7 @@ service:
   type: ClusterIP
   port: 8080
   targetPort: 8080
+  name: ""
 
 route:
   enabled: true
@@ -66,16 +72,20 @@ ingress:
   hosts:
     - host: chart-example.local
       paths:
-        - path: /
-          backend:
-            serviceName: chart-example.local
-            servicePort: 80
+      - path: /
+        backend:
+          serviceName: chart-example.local
+          servicePort: 80
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
 resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -95,3 +105,62 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+configmaps:
+  enabled: true
+  items:
+  - name: configmaptest
+    mountPath: /test/mount/path
+    data:
+      testfile.txt: |
+        some text
+        inserted here
+  - name: configmaptest2
+    mountPath: /test/mount/path2
+    data:
+      testfile.txt: |
+        some text
+        inserted here
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

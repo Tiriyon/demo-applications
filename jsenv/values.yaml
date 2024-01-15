@@ -1,0 +1,14 @@
+demo-app:
+  image:
+    repository: "tiriyon/envloading"
+    tag: latest
+
+  configmaps:
+    enabled: true
+    items:
+    - name: env
+      mountPath: /app
+      data:
+        .env: |
+          PORT=3000
+          GREETING=Hola

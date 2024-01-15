@@ -6,6 +6,7 @@ metadata:
   labels:
     {{- include "general-template.labels" . | nindent 4 }}
   annotations:
+    sidecar.jaegertracing.io/inject: "jaeger-elasticsearch"
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -21,7 +22,25 @@ spec:
       {{- end }}
       labels:
         {{- include "general-template.selectorLabels" . | nindent 8 }}
+        cellcom/release-timestamp: {{ include "general-template.timestamp" . }}
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app.kubernetes.io/instance
+                  operator: In
+                  values:
+                  - {{ .Release.Name }}
+                - key: cellcom/release-timestamp
+                  operator: In
+                  values:
+                  - {{ include "general-template.timestamp" . }}
+              topologyKey: "cellcom/region"
+
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -34,6 +53,23 @@ spec:
         - name: {{ $appName }}
           persistentVolumeClaim:
             claimName: {{ $appName }}-{{ .Release.Namespace }}
+        {{- if .Values.configmaps.enabled }}
+        {{- range .Values.configmaps.items }}
+        - name: {{ .name }}-{{ $appName }}
+          configMap:
+            name: {{ .name }}-{{ $appName }}
+        {{- end}}
+      {{- end }}
+      {{- end }}
+      {{- if not .Values.volume.enabled }}
+      {{- if .Values.configmaps.enabled }}
+      volumes:
+        {{- range .Values.configmaps.items }}
+        - name: {{ .name }}-{{ $appName }}
+          configMap:
+            name: {{ .name }}-{{ $appName }}
+        {{- end}}
+      {{- end }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
@@ -47,19 +83,28 @@ spec:
           volumeMounts:
           - name: {{ $appName }}
             mountPath: {{ .Values.volume.mountPath }}
+          {{- if .Values.configmaps.enabled }}
+          # configmap enabled and volume enabled
+          {{- range .Values.configmaps.items }}
+          - name: {{ .name }}-{{ $appName}}
+            mountPath: {{ .mountPath }}
+          {{- end }}
+          {{- end }}
+          {{- end }}
+          {{- if not .Values.volume.enabled }}
+          {{- if .Values.configmaps.enabled }}
+          # configmap enabled volume is not enabled
+          volumeMounts:
+          {{- range .Values.configmaps.items }}
+          - name: {{ .name }}-{{ $appName}}
+            mountPath: {{ .mountPath }}
+          {{- end }}
+          {{- end }}
           {{- end }}
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-#          livenessProbe:
-#            httpGet:
-#              path: /
-#              port: http
-#          readinessProbe:
-#            httpGet:
-#              path: /
-#              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
