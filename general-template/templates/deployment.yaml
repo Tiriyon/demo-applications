@@ -8,6 +8,7 @@ metadata:
   annotations:
     sidecar.jaegertracing.io/inject: "jaeger-elasticsearch"
 spec:
+  revisionHistoryLimit: 1
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
