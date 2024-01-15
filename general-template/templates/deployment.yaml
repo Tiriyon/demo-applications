@@ -101,6 +101,7 @@ spec:
           {{- range .Values.configmaps.items }}
           - name: {{ .name }}-{{ $appName}}
             mountPath: {{ .mountPath }}
+            subPath: {{ .subPath }}
           {{- end }}
           {{- end }}
           {{- end }}
