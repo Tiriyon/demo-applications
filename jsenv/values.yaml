@@ -12,4 +12,4 @@ demo-app:
       data:
         .env: |
           PORT=3000
-          GREETING=IDOCOMPRENDE!
+          GREETING=Render new variables on container for nodejs using configmaps
