@@ -1,6 +1,6 @@
 demo-app:
   image:
-    repository: "tiriyon/envloading"
+    repository: "tiriyon/envloadingjs"
     tag: latest
 
   configmaps:
