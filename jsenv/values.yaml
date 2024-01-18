@@ -12,4 +12,4 @@ demo-app:
       data:
         .env: |
           PORT=3000
-          GREETING=Works like a charm
+          GREETING="hello :)"
