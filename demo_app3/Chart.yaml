@@ -7,5 +7,5 @@ appVersion: "0.1.0"
 dependencies:
   - name: general-template
     version: "0.1.0"
-    alias: demo-app
+    alias: demo-app34
     repository: "file://../general-template"
