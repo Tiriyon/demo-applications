@@ -1,0 +1,8 @@
+demo-app3:
+  image:
+    repository: "nginx"
+    tag: latest
+demo-app4:
+  image:
+    repository: "nginx"
+    tag: latest
